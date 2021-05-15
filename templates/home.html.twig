@@ -1,0 +1,36 @@
+{% extends 'base.html.twig' %}
+{% block title %}
+    Kikou x)
+{% endblock %}
+{% block header %}
+    <h2>Voici le header</h2>
+{% endblock %}
+{% block body %}
+    <h1>{{ title | upper }}</h1>
+    <p>Comment allez-vous ?</p>
+    <a href="{{ path('hello', {'prenom': 'Pier', 'age': 28}) }}">Lien vers bonjour</a>
+     {#
+     {% if age >= 18 %}
+         <p>Vous êtes un adulte</p>
+     {% else %}
+         <p>Vous êtes un enfant</p>
+     {% endif %}
+     #}
+
+
+    <ul>
+        {% for compteur in 0..10 %}
+            <li>{{ compteur }}</li>
+        {% endfor %}
+    </ul>
+
+    {% for prenom, age in tableau %}
+        {% if loop.first %}
+            <strong>{{ prenom }} a {{ age }} ans</strong>
+        {% elseif loop.last%}
+            <em>{{ prenom }} a {{ age }} ans</em>
+        {% else %}
+            <p>{{ prenom }} a {{ age }} ans</p>
+        {% endif %}
+    {% endfor %}
+{% endblock %}
