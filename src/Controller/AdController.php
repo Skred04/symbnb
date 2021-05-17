@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Ad;
 use App\Repository\AdRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -11,6 +12,7 @@ class AdController extends AbstractController
 {
     /**
      * @Route("/ads", name="ads_index")
+	 * @return Response
      */
     public function index(AdRepository $repo): Response
     {
@@ -28,9 +30,7 @@ class AdController extends AbstractController
 	 * @return Response
 	 * @author Pier
 	 */
-    public function show($slug, AdRepository $repo): Response {
-    	$ad = $repo->findOneBySlug($slug);
-
+    public function show(Ad $ad): Response {
 		return $this->render("ad/show.html.twig", [
 			"ad" => $ad
 		]);
