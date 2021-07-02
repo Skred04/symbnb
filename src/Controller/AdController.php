@@ -40,11 +40,6 @@ class AdController extends AbstractController
 
         $form->handleRequest($request);
 
-        $this->addFlash(
-            'success',
-            "L'annonce <strong>{$ad->getTitle()}</strong> à bien été enregistrée !"
-        );
-
         if($form->isSubmitted() && $form->isValid()){
             foreach ($ad->getImages() as $image){
                 $image->setAd($ad);
@@ -52,6 +47,11 @@ class AdController extends AbstractController
             }
             $manager->persist($ad);
             $manager->flush();
+
+            $this->addFlash(
+                'success',
+                "L'annonce <strong>{$ad->getTitle()}</strong> à bien été enregistrée !"
+            );
 
             return $this->redirectToRoute('ads_show', [
                 'slug' => $ad->getSlug()
