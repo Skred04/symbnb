@@ -51,18 +51,18 @@
 
 {% block javascripts %}
 <script>
+    var imageCounter = 0;
     document.getElementById('add-image').addEventListener('click', function(){
-        // Récupération du numéro des futurs champs
-        const index = document.querySelectorAll('#ad_images div.form-group').length
-
         const addImagesElement = document.getElementById('ad_images')
         // Récupération du prototype des entrées
-        const tmpl = addImagesElement.dataset.prototype.replaceAll('__name__', index)
+        const tmpl = addImagesElement.dataset.prototype.replaceAll('__name__', imageCounter)
         // J'injecte le code dans la div
         addImagesElement.innerHTML += tmpl
+        imageCounter++
 
         // Je gere le bouton supprimé
         handleDeleteButtons()
+        handleRefresh()
     })
 
     function handleDeleteButtons(){
@@ -70,6 +70,14 @@
             button.addEventListener('click', function () {
                 const target = this.dataset.target
                 document.getElementById(target).remove()
+            })
+        })
+    }
+
+    function handleRefresh(){
+        document.querySelectorAll('#ad_images input').forEach(function (input) {
+            input.addEventListener('change', function (event) {
+                document.getElementById(event.target.id).setAttribute('value', event.target.value)
             })
         })
     }
