@@ -72,7 +72,7 @@ class Ad
     /**
      * @ORM\OneToMany(targetEntity=Image::class, mappedBy="ad", orphanRemoval=true)
      */
-    private ArrayCollection $images;
+    private $images;
 
     public function __construct()
     {

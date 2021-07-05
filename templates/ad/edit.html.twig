@@ -1,0 +1,90 @@
+{% extends 'base.html.twig' %}
+{% block title %}
+    Edition d'une annonce
+{% endblock%}
+
+{% form_theme form _self %}
+
+{% block body %}
+    <div class="container">
+        <h1>Modifier l'annonce : {{ ad.title }}</h1>
+
+        {{ form_start(form) }}
+
+        {{ form_widget(form) }}
+        <div class="text-center">
+            <button type="submit" class="btn btn-primary">Modifier l'annonce</button>
+        </div>
+
+        {{ form_end(form) }}
+    </div>
+{% endblock %}
+
+{% block _ad_images_widget %}
+    <p>Ici, vous pouvez ajouter vos propres images !</p>
+    {{ form_widget(form) }}
+    <div class="form-group">
+        <button type="button" class="btn btn-primary mt-2" id="add-image">Ajouter une image</button>
+    </div>
+{% endblock %}
+
+{% block _ad_images_entry_row %}
+    {{ form_widget(form) }}
+{% endblock %}
+
+{% block _ad_images_entry_widget %}
+    <div class="form-group mt-2" id="block_{{ id }}">
+        <div class="row">
+            <div class="col-10">
+                <div class="row">
+                    <div class="col">
+                        {{ form_widget(form.url) }}
+                    </div>
+                    <div class="col">
+                        {{ form_widget(form.caption) }}
+                    </div>
+                </div>
+            </div>
+            <div class="col-2">
+                <button type="button" data-action="delete" data-target="block_{{ id }}" class="btn btn-danger">X</button>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+        var imageCounter = 0;
+        document.getElementById('add-image').addEventListener('click', function(){
+            const addImagesElement = document.getElementById('ad_images')
+            // Récupération du prototype des entrées
+            const tmpl = addImagesElement.dataset.prototype.replaceAll('__name__', imageCounter)
+            // J'injecte le code dans la div
+            addImagesElement.innerHTML += tmpl
+            imageCounter++
+
+            // Je gere le bouton supprimé
+            handleDeleteButtons()
+            handleRefresh()
+        })
+
+        function handleDeleteButtons(){
+            document.querySelectorAll('button[data-action="delete"]').forEach(function (button) {
+                button.addEventListener('click', function () {
+                    const target = this.dataset.target
+                    document.getElementById(target).remove()
+                })
+            })
+        }
+
+        function handleRefresh(){
+            document.querySelectorAll('#ad_images input').forEach(function (input) {
+                input.addEventListener('change', function (event) {
+                    document.getElementById(event.target.id).setAttribute('value', event.target.value)
+                })
+            })
+        }
+
+        handleDeleteButtons()
+    </script>
+{% endblock %}
