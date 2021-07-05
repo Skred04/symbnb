@@ -48,6 +48,7 @@ class AdType extends AbstractType
                 [
                     'entry_type' => ImageType::class,
                     'allow_add' => true,
+                    'allow_delete' => true
                 ]
             )
         ;
