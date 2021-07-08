@@ -1,7 +1,7 @@
 security:
     password_hashers:
         App\Entity\User:
-            algorithm: bcrypt
+            algorithm: auto
     # https://symfony.com/doc/current/security.html#where-do-users-come-from-user-providers
     providers:
         users_in_memory: { memory: null }
@@ -14,7 +14,7 @@ security:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
         main:
-            anonymous: false
+            anonymous: true
             lazy: true
             provider: in_database
             form_login:
