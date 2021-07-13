@@ -3,6 +3,7 @@
 namespace App\DataFixtures;
 
 use App\Entity\Ad;
+use App\Entity\Booking;
 use App\Entity\Image;
 use App\Entity\Role;
 use App\Entity\User;
@@ -67,15 +68,12 @@ class AppFixtures extends Fixture
 
     	// Nous gérons les annonces
     	for ($i = 1; $i <= 30; $i++){
-			$ad = new Ad();
-
 			$title = $faker->sentence();
-			$coverImage = $faker->imageUrl(1000, 350);
 			$introduction = $faker->paragraph(2);
 			$content = "<p>". join("</p><p>", $faker->paragraphs(5)) . "</p>";
-
 			$user = $users[mt_rand(0, count($users) - 1)];
 
+			$ad = new Ad();
 			$ad->setTitle($title)
 				->setCoverImage("https://picsum.photos/1000/400?random=" . mt_rand(1, 40000))
 				->setIntroduction($introduction)
@@ -84,15 +82,37 @@ class AppFixtures extends Fixture
 				->setRooms(mt_rand(1, 5))
                 ->setAuthor($user);
 
+			// Gestion des images d'annonces
 			for($j =1; $j <= mt_rand(2, 5); $j++){
 				$image = new Image();
-
 				$image->setUrl("https://picsum.photos/1000/400?random=" . mt_rand(1, 40000))
 					->setCaption($faker->sentence())
 					->setAd($ad);
 
 				$manager->persist($image);
 			}
+
+			//Gestion des réservations
+            for($j =1; $j <= mt_rand(0, 10); $j++){
+                $duration = mt_rand(3,10);
+                $createdAt = $faker->dateTimeBetween("-6 months");
+                $startDate = $faker->dateTimeBetween("-3 months");
+                $endDate = (clone $startDate)->modify("+$duration days");
+                $amount = $ad->getPrice() * $duration;
+                $comment = $faker->paragraph();
+                $booker = $users[mt_rand(0, count($users) - 1)];
+
+                $booking = new Booking();
+                $booking->setBooker($booker)
+                        ->setAd($ad)
+                        ->setStartDate($startDate)
+                        ->setEndDate($endDate)
+                        ->setCreatedAt($createdAt)
+                        ->setAmount($amount)
+                        ->setComment($comment);
+
+                $manager->persist($booking);
+            }
 
 			$manager->persist($ad);
 		}
