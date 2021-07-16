@@ -21,7 +21,7 @@
         </div>
         <div class="text-center">
             <h4>Montant du séjour : <span id="amount">0</span> &euro;</h4>
-            <span id="day">0</span> nuit(s) à {{ ad.price }} / nuit
+            <span id="days">0</span> nuit(s) à {{ ad.price }} / nuit
         </div>
 
         <div class="pt-5">
@@ -33,4 +33,26 @@
 
         {{ form_end(form) }}
     </div>
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+        document.getElementById('booking_startDate').addEventListener("change", calculateAmount)
+        document.getElementById('booking_endDate').addEventListener("change", calculateAmount)
+
+        function calculateAmount () {
+            const endDate = new Date(document.getElementById('booking_endDate').value.replace(/(\d+)\/(\d+)\/(\d{4})/, '$3-$2-$1'));
+            const startDate = new Date(document.getElementById('booking_startDate').value.replace(/(\d+)\/(\d+)\/(\d{4})/, '$3-$2-$1'))
+
+            if (startDate && endDate && startDate < endDate) {
+                const DAY_TIME = 24 * 60 * 60 * 1000;
+                const interval = endDate.getTime() - startDate.getTime()
+                const days = interval / DAY_TIME
+                const amount = days * {{ ad.price }};
+                document.getElementById('days').innerText = days;
+                document.getElementById('amount').innerText = amount
+            }
+
+        }
+    </script>
 {% endblock %}

@@ -106,6 +106,32 @@ class Ad
 		}
 	}
 
+    /**
+     * Permet de récupérer un tableau des jours qui ne sont pas disponibles pour cette annonce
+     *
+     * @return array Un tableau d'objets DateTime
+     */
+	public function getNotAvailableDays() : array {
+        $notAvailableDays = [];
+
+        foreach ($this->getBookings() as $booking){
+            // Calculer les jours qui se trouvent entre la date d'arrivée et de départ
+            $dateRange = range(
+                $booking->getStartDate()->getTimestamp(),
+                $booking->getEndDate()->getTimestamp(),
+            24 * 60 * 60
+            );
+
+            $days = array_map(function ($dayTimestamp) {
+                return new \DateTime(date('Y-m-d', $dayTimestamp));
+            }, $dateRange);
+
+            $notAvailableDays = array_merge($notAvailableDays, $days);
+        }
+
+        return $notAvailableDays;
+    }
+
     public function getId(): ?int
     {
         return $this->id;
