@@ -29,6 +29,16 @@ div.ad-title h1, div.ad-title p {
     max-height: 24px;
 }
 
+.avatar-micro{
+    max-width: 20px;
+    max-height: 20px;
+}
+
 .user-description{
     overflow-wrap: break-word;
 }
+
+span.rating i {
+    color: goldenrod;
+}
+
