@@ -1,5 +1,4 @@
 var imageCounter = document.querySelectorAll('button[data-action="delete"]').length;
-console.log(imageCounter)
 
 document.getElementById('add-image').addEventListener('click', function(){
     const addImagesElement = document.getElementById('ad_images')
