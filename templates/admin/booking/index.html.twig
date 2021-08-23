@@ -1,0 +1,39 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block title %}Gestion des réservations{% endblock %}
+
+{% block body %}
+    <h1 class="py-5">Gestions des réservations</h1>
+    <div class="container-fluid">
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <td>ID</td>
+                    <td>Date de création</td>
+                    <td>Réserveur</td>
+                    <td>Date d'arrivée</td>
+                    <td>Date de départ</td>
+                    <td>Annonce</td>
+                    <td></td>
+                </tr>
+            </thead>
+            <tbody>
+                {% for booking in pagination.data %}
+                    <tr>
+                        <td>{{ booking.id }}</td>
+                        <td>{{ booking.createdAt | date('d/m/Y H:i') }}</td>
+                        <td><img src="{{ booking.booker.picture }}" alt="Avatar de {{ booking.booker.fullName }}" class="avatar avatar-micro"> {{ booking.booker.fullName }}</td>
+                        <td>{{ booking.startDate | date('d/m/Y') }}</td>
+                        <td>{{ booking.endDate | date('d/m/Y') }}</td>
+                        <td>{{ booking.ad.title }}</td>
+                        <td>
+                            <a href="{{ path('admin_bookings_edit', {'id': booking.id}) }}" class="btn btn-primary"><i class="fas fa-edit"></i></a>
+                            <a href="{{ path('admin_bookings_delete', {'id': booking.id}) }}" class="btn btn-danger"><i class="fas fa-trash"></i></a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {{ pagination.display() }}
+    </div>
+{% endblock %}

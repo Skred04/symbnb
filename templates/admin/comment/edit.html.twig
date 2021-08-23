@@ -1,0 +1,26 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block title %}Modification du commentaire n°{{ comment.id }}{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <h1 class="py-5">Modification du commentaire n°{{ comment.id }}</h1>
+        <div>
+            <div class="card text-white bg-info mb-3">
+                <div class="card-header">Information sur le commentaire :</div>
+                <div class="card-body">
+                    <p>Annonce liée au commentaire : <a href="{{ path('ads_show', {'slug': comment.ad.slug}) }}">{{ comment.ad.title }}</a></p>
+                    <p>Auteur : <a href="{{ path('user_show', {'slug': comment.ad.author.slug }) }}">{{ comment.ad.author.fullName }}</a></p>
+                    <p>Date de création : {{ comment.createdAt | date('d/m/Y H:i') }}</p>
+                    <p>Note : {{ comment.rating }}</p>
+                </div>
+            </div>
+            {{ form_start(form) }}
+            <div class="form-group py-3">
+                {{ form_widget(form) }}
+            </div>
+            <button type="submit" class="btn btn-primary">Modifier</button>
+            {{ form_end(form) }}
+        </div>
+    </div>
+{% endblock %}
